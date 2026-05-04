@@ -1,0 +1,13 @@
+- interface_declaration Reader @3-6
+- function_type_declaration Handler @8
+- struct_declaration RetryPolicy @10-12
+- struct_declaration Config @14-17
+- struct_declaration Service @19-22
+- function_declaration NewService @24-26
+- method_declaration Service.Run @28-30
+- method_declaration Service.Close @32-34
+- function_declaration defaultConfig @36-41
+- function_declaration bootstrap @43-56
+  - closure_declaration fallback @45-47
+  - closure_declaration helper @48-53
+    - closure_declaration inner @49-51

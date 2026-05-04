@@ -1,0 +1,13 @@
+- class_definition Reader @1-6
+  - function_definition read @2-3
+  - function_definition close @5-6
+- class_definition CachedReader @9-16
+  - function_definition __init__ @10-11
+  - function_definition read @13-16
+- class_definition Service @19-33
+  - class_definition Metrics @20-22
+    - function_definition __init__ @21-22
+  - function_definition __init__ @24-26
+  - function_definition run @28-30
+  - function_definition close @32-33
+- function_definition bootstrap @36-39

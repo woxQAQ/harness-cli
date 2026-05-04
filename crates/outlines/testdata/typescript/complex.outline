@@ -1,0 +1,10 @@
+- type_alias_declaration EventMap @1-4
+- interface_declaration Reader @6-9
+- enum_declaration Status @11-15
+- class_declaration Service @17-40
+  - public_field_definition cache @18
+  - method_definition constructor @20-23
+  - method_definition run @25-30
+  - method_definition close @32-35
+  - method_definition from @37-39
+- function_declaration bootstrap @42-46

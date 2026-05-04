@@ -1,3 +1,7 @@
 # harness cli
 
-A set of CLI for harness usage
+A set of CLIs for harness usage
+
+## Content
+
+- `crate/outlines`: Tool to provide file outline information.

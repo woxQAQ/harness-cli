@@ -2,6 +2,7 @@ use ast_grep_language::{Language, SupportLang};
 use outlines::{render_file_outline, render_outline};
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::process::Command;
 
 #[test]
 fn fixture_outputs_match_expected() {
@@ -37,6 +38,42 @@ fn file_outline_includes_header() {
         .expect("expected outline should exist");
     let expected = format!("{} (Rust)\n{}", fixture.display(), expected_body);
     assert_eq!(output, expected);
+}
+
+#[test]
+fn cli_supports_multiple_files() {
+    let rust_fixture = fixture_root().join("rust/simple.rs");
+    let go_fixture = fixture_root().join("go/simple.go");
+    let output = Command::new(env!("CARGO_BIN_EXE_outlines"))
+        .arg(&rust_fixture)
+        .arg(&go_fixture)
+        .output()
+        .expect("binary should run");
+    assert!(output.status.success(), "stderr: {}", String::from_utf8_lossy(&output.stderr));
+
+    let expected_rust = render_file_outline(&rust_fixture, None).expect("rust fixture should render");
+    let expected_go = render_file_outline(&go_fixture, None).expect("go fixture should render");
+    let expected = format!("{expected_rust}\n\n{expected_go}");
+    assert_eq!(String::from_utf8_lossy(&output.stdout), expected);
+}
+
+#[test]
+fn cli_expands_directories() {
+    let go_dir = fixture_root().join("go");
+    let output = Command::new(env!("CARGO_BIN_EXE_outlines"))
+        .arg(&go_dir)
+        .output()
+        .expect("binary should run");
+    assert!(output.status.success(), "stderr: {}", String::from_utf8_lossy(&output.stderr));
+
+    let mut files = collect_source_fixtures(&go_dir);
+    files.sort();
+    let expected = files
+        .iter()
+        .map(|path| render_file_outline(path, None).expect("fixture should render"))
+        .collect::<Vec<_>>()
+        .join("\n\n");
+    assert_eq!(String::from_utf8_lossy(&output.stdout), expected);
 }
 
 fn fixture_root() -> PathBuf {
